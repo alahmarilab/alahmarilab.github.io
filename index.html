@@ -119,6 +119,7 @@ h3{font-family:var(--f-display);font-weight:500;font-size:1.45rem;line-height:1.
 .term span{display:block;font-size:.74rem;font-weight:400;color:var(--muted);margin-top:.3rem;letter-spacing:.02em}
 .theme p{max-width:var(--measure)}
 .theme .ref{display:flex;flex-wrap:wrap;align-items:baseline;gap:.25rem .6rem;margin-top:1rem;font-size:.92rem}
+.status{display:inline-block;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);border:1px solid currentColor;border-radius:999px;padding:.1rem .55rem;margin-bottom:.6rem}
 
 /* People */
 .people{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr))}
@@ -149,7 +150,9 @@ h3{font-family:var(--f-display);font-weight:500;font-size:1.45rem;line-height:1.
 @media (min-width:760px){.contact-grid{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);align-items:start}}
 .contact-grid > *{min-width:0}
 .contact-grid p{max-width:var(--measure)}
-.email-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem 1rem;padding:1rem 1.1rem;border:1px solid var(--rule);border-radius:8px;background:var(--surface);margin-bottom:1.25rem}
+.emails{display:grid;gap:.6rem;margin-bottom:1.25rem}
+.email-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem 1rem;padding:.85rem 1.1rem;border:1px solid var(--rule);border-radius:8px;background:var(--surface)}
+.email-text{display:grid;gap:.15rem;min-width:0}
 .email{font-family:var(--f-mono);font-size:1rem;-webkit-user-select:all;user-select:all;overflow-wrap:anywhere;min-width:0}
 .copy{font:600 .85rem/1 var(--f-body);padding:.6rem .9rem;border-radius:5px;border:1px solid var(--rule);background:var(--bg);color:var(--ink);cursor:pointer}
 .copy:hover{border-color:var(--ink)}
@@ -239,10 +242,11 @@ address{font-style:normal;color:var(--muted);line-height:1.7}
       <p class="track-label">Research</p>
       <div>
         <h2>What we work on</h2>
-        <p class="section-intro">We combine analysis of large public patient datasets with laboratory testing. Current projects include the three below.</p>
+        <p class="section-intro">We combine analysis of large public patient datasets with laboratory testing. Below are our current projects and one we plan to start.</p>
 
         <!-- EDIT RESEARCH: each <article class="theme"> block is one project.
-             To add a project, copy a whole block (from <article> to </article>) and change the text. -->
+             To add a project, copy a whole block (from <article> to </article>) and change the text.
+             To mark a project as upcoming, keep the <p class="status">Planned</p> line; delete it once the project starts. -->
         <div class="themes">
           <article class="theme">
             <div class="term">APA<span>poly(A) site choice</span></div>
@@ -250,6 +254,15 @@ address{font-style:normal;color:var(--muted);line-height:1.7}
               <h3>Alternative polyadenylation dysregulation in cancer</h3>
               <p>Most human genes have more than one site where their transcript can be cut and given a poly(A) tail. Tumors often shift toward proximal sites, making shorter 3′ UTRs that escape microRNA control. We map these shifts across large patient cohorts and ask which changes in the cleavage and polyadenylation machinery drive them. In a recent pan-cancer study, amplification of CPSF1, which often occurs together with MYC amplification, was linked to 3′ UTR changes and poorer survival even in tumors where MYC was not amplified.</p>
               <p class="ref"><span class="mono-label">Paper</span><a href="https://doi.org/10.3390/biology14121637">Alahmari, <i>Biology</i> 2025</a></p>
+            </div>
+          </article>
+
+          <article class="theme">
+            <div class="term">FHL1<span>Xq26.3</span></div>
+            <div>
+              <h3>FHL1 in colorectal cancer fibroblasts</h3>
+              <p>FHL1 is a LIM-domain adaptor protein that acts as a tumor suppressor in colorectal cancer cells. It is rarely mutated, but its expression is lower in tumors than in normal colon. Combining TCGA data with public single-cell RNA-seq datasets, we found that FHL1 is expressed mainly in fibroblasts and is lost specifically in cancer-associated fibroblasts, where it falls as activation markers such as FAP and ACTA2 rise. Single-cell ATAC-seq data showed lower accessibility at the FHL1 promoter in these fibroblasts.</p>
+              <p class="ref"><span class="mono-label">Paper</span><a href="https://doi.org/10.3390/genes17101210">Alqasem et al., <i>Genes</i> 2026</a></p>
             </div>
           </article>
 
@@ -266,6 +279,15 @@ address{font-style:normal;color:var(--muted);line-height:1.7}
             <div>
               <h3>Anticancer activity of local plant extracts</h3>
               <p>Many plants that grow in Saudi Arabia are used in traditional medicine. We test extracts from local plants for activity against cancer cells, to find which ones deserve closer study and which compounds are responsible for their effects.</p>
+            </div>
+          </article>
+
+          <article class="theme">
+            <div class="term">Cohort<span>Saudi patients</span></div>
+            <div>
+              <p class="status">Planned</p>
+              <h3>Genomic and transcriptomic characterization of cancers in the Saudi population</h3>
+              <p>Large public cancer genomics resources such as TCGA come mostly from patients in North America and Europe. We plan to profile the genomes and transcriptomes of cancers from patients in Saudi Arabia, to find genetic changes and gene expression patterns that existing cohorts may miss.</p>
             </div>
           </article>
         </div>
@@ -332,6 +354,13 @@ address{font-style:normal;color:var(--muted);line-height:1.7}
         <!-- EDIT PUBLICATIONS: each <li> block is one paper. Add new papers at the top (newest first). -->
         <ol class="pubs">
           <li>
+            <p class="pub-year">2026</p>
+            <div>
+              <p class="pub-title"><a href="https://doi.org/10.3390/genes17101210">FHL1 downregulation is specific to cancer-associated fibroblasts and linked to reduced chromatin accessibility in colorectal cancer</a></p>
+              <p class="pub-meta">Alqasem AA, Al-Burayk W, Habjar M, Aldawsari B, Almansour A, … <b>Alahmari AA.</b> <i>Genes</i> 17(10):1210</p>
+            </div>
+          </li>
+          <li>
             <p class="pub-year">2025</p>
             <div>
               <p class="pub-title"><a href="https://doi.org/10.3390/biology14121637">CPSF1 is co-amplified with MYC but is independently associated with alternative polyadenylation in cancer</a></p>
@@ -353,9 +382,16 @@ address{font-style:normal;color:var(--muted);line-height:1.7}
           <p>We are glad to hear from students who want to join the lab and from researchers interested in collaborating on cancer genomics, drug combinations or natural products.</p>
         </div>
         <div>
-          <div class="email-row">
-            <span class="email" id="lab-email">alahmarilab@outlook.com</span>
-            <button type="button" class="copy" id="copy-email">Copy</button>
+          <!-- EDIT EMAILS: change the address in both the link (mailto:) and the visible text. -->
+          <div class="emails">
+            <div class="email-row">
+              <div class="email-text"><p class="mono-label">Lab</p><a class="email" id="email-lab" href="mailto:alahmarilab@outlook.com">alahmarilab@outlook.com</a></div>
+              <button type="button" class="copy" id="copy-lab" data-target="email-lab">Copy</button>
+            </div>
+            <div class="email-row">
+              <div class="email-text"><p class="mono-label">University</p><a class="email" id="email-psau" href="mailto:aa.alahmari@psau.edu.sa">aa.alahmari@psau.edu.sa</a></div>
+              <button type="button" class="copy" id="copy-psau" data-target="email-psau">Copy</button>
+            </div>
           </div>
           <address>Department of Medical Laboratory<br>College of Applied Medical Sciences<br>Prince Sattam bin Abdulaziz University<br>Al-Kharj 11942, Saudi Arabia</address>
         </div>
@@ -436,18 +472,19 @@ address{font-style:normal;color:var(--muted);line-height:1.7}
     btn.addEventListener('click', function(){ set(btn.getAttribute('data-mode')); });
   });
 
-  var copyBtn = document.getElementById('copy-email');
-  var emailEl = document.getElementById('lab-email');
-  function flash(text){ copyBtn.textContent = text; setTimeout(function(){ copyBtn.textContent = 'Copy'; }, 1600); }
-  function selectEmail(){
-    var range = document.createRange(); range.selectNodeContents(emailEl);
-    var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
-    flash('Selected');
-  }
-  copyBtn.addEventListener('click', function(){
-    try {
-      navigator.clipboard.writeText(emailEl.textContent.trim()).then(function(){ flash('Copied'); }, selectEmail);
-    } catch (e) { selectEmail(); }
+  document.querySelectorAll('.copy').forEach(function(btn){
+    var target = document.getElementById(btn.getAttribute('data-target'));
+    function flash(text){ btn.textContent = text; setTimeout(function(){ btn.textContent = 'Copy'; }, 1600); }
+    function selectText(){
+      var range = document.createRange(); range.selectNodeContents(target);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      flash('Selected');
+    }
+    btn.addEventListener('click', function(){
+      try {
+        navigator.clipboard.writeText(target.textContent.trim()).then(function(){ flash('Copied'); }, selectText);
+      } catch (e) { selectText(); }
+    });
   });
 })();
 </script>
