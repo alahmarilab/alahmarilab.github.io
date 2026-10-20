@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alahmari Lab</title>
+<meta name="description" content="The Alahmari Lab at Prince Sattam bin Abdulaziz University studies cancer genetics and therapeutics: alternative polyadenylation, transcription termination inhibitors and anticancer plant extracts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
+<style>
+/* Layout: read like a genome browser. Sticky lab bar, a coverage-track hero, then sections as labelled tracks with a mono label gutter on the left. */
+:root{
+  --bg:#F5F7F7; --surface:#FFFFFF; --ink:#10202B; --muted:#52626D; --rule:#D3DADE;
+  --track:#2E5C8A; --track-soft:#C8D7E6; --accent:#17784C; --accent-soft:#DDEFE5;
+  --f-display:"Spectral", Georgia, "Times New Roman", serif;
+  --f-body:"Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --measure:65ch; --wrap:72rem;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D151B; --surface:#14202A; --ink:#E2E9ED; --muted:#95A4AF; --rule:#26353F;
+    --track:#6FA3D6; --track-soft:#243A4F; --accent:#55C792; --accent-soft:#16392A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D151B; --surface:#14202A; --ink:#E2E9ED; --muted:#95A4AF; --rule:#26353F;
+  --track:#6FA3D6; --track-soft:#243A4F; --accent:#55C792; --accent-soft:#16392A;
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0}
+img{max-width:100%}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1rem;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:var(--accent);text-underline-offset:.18em;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+p{margin:0}
+
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media (min-width:720px){.wrap{padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px))}}
+
+/* Header */
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--bg);border-bottom:1px solid var(--rule)}
+.head-inner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.35rem 2rem;padding-block:.7rem}
+.brand{font-family:var(--f-display);font-weight:600;font-size:1.3rem;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+.nav{flex:1 1 100%;min-width:0;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav ul{display:flex;gap:1.25rem;list-style:none;margin:0;padding:0 0 .1rem;white-space:nowrap}
+.nav a{color:var(--muted);text-decoration:none;font-size:.9rem;font-weight:500}
+.nav a:hover{color:var(--ink)}
+@media (min-width:720px){.nav{flex:0 1 auto}.nav ul{gap:1.75rem}}
+
+/* Hero */
+.hero{padding-block:clamp(2.25rem,6vw,4.5rem)}
+.hero-grid{display:grid;gap:2.5rem;align-items:center}
+@media (min-width:920px){.hero-grid{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:4rem}}
+.hero-copy{min-width:0}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+h1{font-family:var(--f-display);font-weight:500;font-size:clamp(2.3rem,5.6vw,3.8rem);line-height:1.06;letter-spacing:-.02em;margin:0 0 1.25rem;text-wrap:balance}
+h1 em{font-style:italic;color:var(--accent)}
+.lead{font-size:1.125rem;max-width:36rem;margin-bottom:1rem}
+.hero-meta{font-size:.95rem;color:var(--muted);max-width:36rem;margin-bottom:1.75rem}
+.actions{display:flex;flex-wrap:wrap;gap:.75rem}
+.btn{display:inline-flex;align-items:center;font:600 .95rem/1 var(--f-body);padding:.8rem 1.1rem;border-radius:6px;text-decoration:none;border:1px solid var(--ink)}
+.btn:hover{text-decoration:none}
+.btn-primary{background:var(--ink);color:var(--bg)}
+.btn-secondary{background:transparent;color:var(--ink)}
+
+/* Coverage figure */
+.locus{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1rem 1rem .9rem;min-width:0;margin:0}
+.locus-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:.6rem}
+.locus-title{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:7px;padding:2px;background:var(--bg)}
+.seg button{font:500 .82rem/1 var(--f-body);color:var(--muted);background:transparent;border:0;border-radius:5px;padding:.55rem .8rem;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.locus svg{display:block;width:100%;height:auto}
+.band{fill:var(--accent-soft)}
+.baseline{stroke:var(--rule);stroke-width:1}
+.cov-ghost rect{fill:var(--track-soft)}
+.cov-live rect{fill:var(--track);transform-box:fill-box;transform-origin:50% 100%}
+.cov-live.ready rect{transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.pa-line{stroke:var(--accent);stroke-width:1;stroke-dasharray:3 3}
+.pa-label{fill:var(--accent);font-family:var(--f-mono);font-size:12px;font-weight:500}
+.gene-intron{stroke:var(--muted);stroke-width:1.5}
+.gene-cds{fill:var(--ink)}
+.gene-utr{fill:var(--muted)}
+.tail{fill:var(--accent);font-family:var(--f-mono);font-size:11px;font-weight:500}
+.svg-label{fill:var(--muted);font-family:var(--f-mono);font-size:11px}
+.readout{display:flex;align-items:center;gap:1rem;border-top:1px solid var(--rule);margin-top:.4rem;padding-top:.85rem}
+.pdui{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:1.65rem;font-weight:500;line-height:1;white-space:nowrap;flex:none}
+.pdui small{display:block;font-size:.66rem;letter-spacing:.09em;color:var(--muted);margin-bottom:.35rem;font-weight:400}
+.readout p{font-size:.9rem;color:var(--muted);min-width:0}
+.locus-foot{font-size:.74rem;color:var(--muted);margin-top:.75rem;line-height:1.5}
+
+/* Sections as tracks */
+.track{border-top:1px solid var(--rule);padding-block:clamp(2.5rem,6vw,4.5rem);scroll-margin-top:6.5rem}
+@media (min-width:720px){.track{scroll-margin-top:4.5rem}}
+.track-grid{display:grid;gap:.75rem 3rem}
+@media (min-width:880px){.track-grid{grid-template-columns:10rem minmax(0,1fr)}}
+.track-grid > *{min-width:0}
+.track-label{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);padding-top:.7rem}
+h2{font-family:var(--f-display);font-weight:500;font-size:clamp(1.8rem,3.4vw,2.5rem);line-height:1.12;letter-spacing:-.015em;margin:0 0 1rem;text-wrap:balance}
+h3{font-family:var(--f-display);font-weight:500;font-size:1.45rem;line-height:1.2;margin:0 0 .6rem;text-wrap:balance}
+.section-intro{max-width:var(--measure);color:var(--muted);font-size:1.05rem;margin-bottom:2rem}
+.mono-label{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+
+/* Research themes */
+.theme{display:grid;gap:.5rem 2rem;padding-block:1.75rem;border-top:1px solid var(--rule)}
+.theme:first-child{border-top:0;padding-top:0}
+.theme > *{min-width:0}
+@media (min-width:640px){.theme{grid-template-columns:9.5rem minmax(0,1fr)}}
+.term{font-family:var(--f-mono);font-size:1.1rem;font-weight:500;line-height:1.25;padding-top:.2rem}
+.term span{display:block;font-size:.74rem;font-weight:400;color:var(--muted);margin-top:.3rem;letter-spacing:.02em}
+.theme p{max-width:var(--measure)}
+.theme .ref{display:flex;flex-wrap:wrap;align-items:baseline;gap:.25rem .6rem;margin-top:1rem;font-size:.92rem}
+
+/* People */
+.people{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr))}
+.person{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1.4rem;display:grid;gap:.7rem;align-content:start}
+.person > *{min-width:0}
+.person.open{background:transparent;border-style:dashed}
+.avatar{width:3.25rem;height:3.25rem;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-family:var(--f-display);font-size:1.15rem;font-weight:600;letter-spacing:.02em}
+.person h3{margin:0;font-size:1.3rem}
+.role{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.alumni{margin-top:2.25rem;padding-top:1.5rem;border-top:1px solid var(--rule);display:grid;gap:.85rem}
+.alumni ul{list-style:none;margin:0;padding:0;display:grid;gap:.4rem 2rem;grid-template-columns:repeat(auto-fill,minmax(min(100%,12rem),1fr))}
+.alumni li{font-size:1rem}
+
+/* Publications */
+.pubs{list-style:none;margin:0 0 1.75rem;padding:0;border-top:1px solid var(--ink)}
+.pubs li{display:grid;gap:.25rem 2rem;padding-block:1.1rem;border-bottom:1px solid var(--rule)}
+.pubs li > *{min-width:0}
+@media (min-width:640px){.pubs li{grid-template-columns:4.5rem minmax(0,1fr)}}
+.pub-year{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--muted);padding-top:.15rem}
+.pub-title{font-family:var(--f-display);font-size:1.2rem;line-height:1.35;margin-bottom:.3rem;max-width:var(--measure)}
+.pub-title a{color:var(--ink);text-decoration-color:var(--rule)}
+.pub-title a:hover{text-decoration-color:var(--accent)}
+.pub-meta{font-size:.92rem;color:var(--muted)}
+.pub-meta b{font-weight:600;color:var(--ink)}
+
+/* Contact */
+.contact-grid{display:grid;gap:2rem}
+@media (min-width:760px){.contact-grid{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);align-items:start}}
+.contact-grid > *{min-width:0}
+.contact-grid p{max-width:var(--measure)}
+.email-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem 1rem;padding:1rem 1.1rem;border:1px solid var(--rule);border-radius:8px;background:var(--surface);margin-bottom:1.25rem}
+.email{font-family:var(--f-mono);font-size:1rem;-webkit-user-select:all;user-select:all;overflow-wrap:anywhere;min-width:0}
+.copy{font:600 .85rem/1 var(--f-body);padding:.6rem .9rem;border-radius:5px;border:1px solid var(--rule);background:var(--bg);color:var(--ink);cursor:pointer}
+.copy:hover{border-color:var(--ink)}
+address{font-style:normal;color:var(--muted);line-height:1.7}
+
+/* Footer */
+.site-foot{border-top:1px solid var(--rule);padding-block:1.75rem;font-size:.85rem;color:var(--muted)}
+.foot-inner{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.5rem 2rem}
+.foot-tail{font-family:var(--f-mono);color:var(--accent);letter-spacing:.05em;overflow:hidden;white-space:nowrap;max-width:100%}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .cov-live.ready rect{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap head-inner">
+    <a class="brand" href="#top">Alahmari Lab</a>
+    <nav class="nav" aria-label="Sections">
+      <ul>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#people">People</a></li>
+        <li><a href="#publications">Publications</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Cancer genetics and therapeutics</p>
+          <h1>How cancer cells <em>end</em> their RNAs, and how to use it against them.</h1>
+          <p class="lead">We study the genetics of cancer and look for new ways to treat it. Our projects range from alternative polyadenylation in patient tumors to combination therapies with transcription termination inhibitors and the anticancer activity of local plant extracts.</p>
+          <p class="hero-meta">Department of Medical Laboratory, College of Applied Medical Sciences, Prince Sattam bin Abdulaziz University, Al-Kharj</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="#research">Our research</a>
+            <a class="btn btn-secondary" href="#contact">Join the lab</a>
+          </div>
+        </div>
+
+        <figure class="locus" aria-label="Example of alternative polyadenylation seen in RNA-seq coverage">
+          <div class="locus-head">
+            <p class="locus-title">RNA-seq coverage · last exon</p>
+            <div class="seg" role="group" aria-label="Sample type">
+              <button type="button" id="mode-normal" data-mode="normal" aria-pressed="false">Normal tissue</button>
+              <button type="button" id="mode-tumor" data-mode="tumor" aria-pressed="true">Tumor</button>
+            </div>
+          </div>
+          <svg viewBox="0 0 360 160" role="img" aria-labelledby="locus-desc">
+            <desc id="locus-desc">Illustrative read coverage over a gene's coding exons and 3′ UTR, with proximal and distal poly(A) sites marked. In tumor, coverage drops after the proximal site.</desc>
+            <rect class="band" x="232" y="20" width="86" height="80"/>
+            <line class="baseline" x1="12" x2="348" y1="100" y2="100"/>
+            <g id="cov-ghost" class="cov-ghost"></g>
+            <g id="cov-live" class="cov-live"></g>
+            <line class="pa-line" x1="232" x2="232" y1="20" y2="134"/>
+            <line class="pa-line" x1="318" x2="318" y1="20" y2="134"/>
+            <text class="pa-label" x="232" y="13" text-anchor="middle">proximal pA</text>
+            <text class="pa-label" x="318" y="13" text-anchor="middle">distal pA</text>
+            <line class="gene-intron" x1="16" x2="192" y1="122" y2="122"/>
+            <rect class="gene-cds" x="16" y="114" width="32" height="16" rx="1"/>
+            <rect class="gene-cds" x="86" y="114" width="36" height="16" rx="1"/>
+            <rect class="gene-cds" x="156" y="114" width="36" height="16" rx="1"/>
+            <rect class="gene-utr" x="192" y="117" width="126" height="10" rx="1"/>
+            <text class="tail" x="322" y="126">AAAA</text>
+            <text class="svg-label" x="104" y="152" text-anchor="middle">coding exons</text>
+            <text class="svg-label" x="255" y="152" text-anchor="middle">3′ UTR</text>
+          </svg>
+          <div class="readout">
+            <div class="pdui"><small>PDUI</small><span id="pdui-val">0.19</span></div>
+            <p id="pdui-note" aria-live="polite">Many transcripts stop at the proximal site, dropping 3′ UTR sequence that carries microRNA binding sites.</p>
+          </div>
+          <figcaption class="locus-foot">Illustrative data. PDUI is the percentage of distal poly(A) site usage: 1 means every transcript keeps the long 3′ UTR, 0 means every transcript is short.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="track" id="research">
+    <div class="wrap track-grid">
+      <p class="track-label">Research</p>
+      <div>
+        <h2>What we work on</h2>
+        <p class="section-intro">We combine analysis of large public patient datasets with laboratory testing. Current projects include the three below.</p>
+
+        <!-- EDIT RESEARCH: each <article class="theme"> block is one project.
+             To add a project, copy a whole block (from <article> to </article>) and change the text. -->
+        <div class="themes">
+          <article class="theme">
+            <div class="term">APA<span>poly(A) site choice</span></div>
+            <div>
+              <h3>Alternative polyadenylation dysregulation in cancer</h3>
+              <p>Most human genes have more than one site where their transcript can be cut and given a poly(A) tail. Tumors often shift toward proximal sites, making shorter 3′ UTRs that escape microRNA control. We map these shifts across large patient cohorts and ask which changes in the cleavage and polyadenylation machinery drive them. In a recent pan-cancer study, amplification of CPSF1, which often occurs together with MYC amplification, was linked to 3′ UTR changes and poorer survival even in tumors where MYC was not amplified.</p>
+              <p class="ref"><span class="mono-label">Paper</span><a href="https://doi.org/10.3390/biology14121637">Alahmari, <i>Biology</i> 2025</a></p>
+            </div>
+          </article>
+
+          <article class="theme">
+            <div class="term">Termination<span>Pol II readthrough</span></div>
+            <div>
+              <h3>Combination therapies with transcription termination inhibitors</h3>
+              <p>When the cleavage machinery cuts a new transcript at its poly(A) site, it also signals RNA polymerase II to stop. Blocking this step leaves the polymerase reading past the ends of genes and disrupts many transcripts at once. We test which anticancer drugs work better when combined with transcription termination inhibitors, looking for combinations that are more effective together than either drug alone.</p>
+            </div>
+          </article>
+
+          <article class="theme">
+            <div class="term">Plants<span>natural products</span></div>
+            <div>
+              <h3>Anticancer activity of local plant extracts</h3>
+              <p>Many plants that grow in Saudi Arabia are used in traditional medicine. We test extracts from local plants for activity against cancer cells, to find which ones deserve closer study and which compounds are responsible for their effects.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="track" id="people">
+    <div class="wrap track-grid">
+      <p class="track-label">People</p>
+      <div>
+        <h2>Lab members</h2>
+        <!-- EDIT PEOPLE: each <article class="person"> block is one member.
+             To add someone, copy Khalid's block, then change the initials, name, role and description.
+             To move someone to former members, delete their block and add their name to the list below. -->
+        <div class="people">
+          <article class="person">
+            <div class="avatar" aria-hidden="true">AA</div>
+            <div>
+              <h3>Abdulrahman Alahmari, PhD</h3>
+              <p class="role">Principal Investigator</p>
+            </div>
+            <p>Dr. Alahmari earned his PhD in Cancer Genetics and Genomics at the State University of New York at Buffalo. He studies cancer genetics and therapeutics, from alternative polyadenylation in tumors to new drug combinations and plant-derived compounds.</p>
+            <p><a href="https://scholar.google.com/citations?user=gILUpZAAAAAJ&amp;hl=en">Google Scholar profile</a></p>
+          </article>
+          <article class="person">
+            <div class="avatar" aria-hidden="true">KA</div>
+            <div>
+              <h3>Khalid Alotaibi</h3>
+              <p class="role">Undergraduate student</p>
+            </div>
+            <p>Khalid is an undergraduate student interested in cancer research. He works mainly on combination therapies with transcription termination inhibitors.</p>
+          </article>
+          <article class="person open">
+            <div class="avatar" aria-hidden="true">+</div>
+            <div>
+              <h3>Join us</h3>
+              <p class="role">Students and researchers</p>
+            </div>
+            <p>We welcome students who are interested in cancer biology, laboratory work or data analysis. <a href="#contact">Get in touch</a>.</p>
+          </article>
+        </div>
+
+        <div class="alumni">
+          <p class="mono-label">Former members</p>
+          <!-- EDIT FORMER MEMBERS: one <li> line per person. -->
+          <ul>
+            <li>Waad Al-Burayk</li>
+            <li>Muneira Habjar</li>
+            <li>Batla Aldawsari</li>
+            <li>Alanoud Almansour</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="track" id="publications">
+    <div class="wrap track-grid">
+      <p class="track-label">Publications</p>
+      <div>
+        <h2>Publications</h2>
+        <p class="section-intro">The full, up-to-date list is on Google Scholar.</p>
+        <!-- EDIT PUBLICATIONS: each <li> block is one paper. Add new papers at the top (newest first). -->
+        <ol class="pubs">
+          <li>
+            <p class="pub-year">2025</p>
+            <div>
+              <p class="pub-title"><a href="https://doi.org/10.3390/biology14121637">CPSF1 is co-amplified with MYC but is independently associated with alternative polyadenylation in cancer</a></p>
+              <p class="pub-meta"><b>Alahmari AA.</b> <i>Biology</i> 14(12):1637</p>
+            </div>
+          </li>
+        </ol>
+        <a class="btn btn-secondary" href="https://scholar.google.com/citations?user=gILUpZAAAAAJ&amp;hl=en">All publications on Google Scholar</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="track" id="contact">
+    <div class="wrap track-grid">
+      <p class="track-label">Contact</p>
+      <div class="contact-grid">
+        <div>
+          <h2>Join or collaborate</h2>
+          <p>We are glad to hear from students who want to join the lab and from researchers interested in collaborating on cancer genomics, drug combinations or natural products.</p>
+        </div>
+        <div>
+          <div class="email-row">
+            <span class="email" id="lab-email">alahmarilab@outlook.com</span>
+            <button type="button" class="copy" id="copy-email">Copy</button>
+          </div>
+          <address>Department of Medical Laboratory<br>College of Applied Medical Sciences<br>Prince Sattam bin Abdulaziz University<br>Al-Kharj 11942, Saudi Arabia</address>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-inner">
+    <!-- EDIT: update the year here each January. -->
+    <p>© 2026 Alahmari Lab · Prince Sattam bin Abdulaziz University</p>
+    <p class="foot-tail" aria-hidden="true">3′ AAAAAAAAAAAAAAAAAAAA</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var NS = 'http://www.w3.org/2000/svg';
+  var ghost = document.getElementById('cov-ghost');
+  var live = document.getElementById('cov-live');
+  var TOP = 26, BASE = 100, H = BASE - TOP;
+  var START = 16, END = 318, STEP = 3, W = 2.2;
+  var PROX = 232, DIST = 318;
+
+  function level(x, mode){
+    if (x < 48) return .84;
+    if (x < 86) return .05;
+    if (x < 122) return .9;
+    if (x < 156) return .06;
+    if (x < 192) return .93;
+    if (x < PROX) return .88;
+    if (x < DIST) return mode === 'tumor' ? .17 : .75;
+    return .03;
+  }
+  function noise(x){ return 1 + .07*Math.sin(x*.41) + .05*Math.sin(x*1.7 + 1) + .03*Math.sin(x*3.1); }
+  function cov(x, mode){ return Math.min(1, level(x, mode) * noise(x)); }
+
+  var bars = [];
+  for (var x = START; x < END; x += STEP){
+    var cx = x + STEP/2;
+    var g = document.createElementNS(NS, 'rect');
+    var gv = cov(cx, 'normal');
+    g.setAttribute('x', x); g.setAttribute('width', W);
+    g.setAttribute('y', (BASE - H*gv).toFixed(2)); g.setAttribute('height', (H*gv).toFixed(2));
+    ghost.appendChild(g);
+    var r = document.createElementNS(NS, 'rect');
+    r.setAttribute('x', x); r.setAttribute('width', W);
+    r.setAttribute('y', TOP); r.setAttribute('height', H);
+    live.appendChild(r);
+    bars.push({ el: r, x: cx, distal: cx >= PROX && cx < DIST });
+  }
+
+  function mean(mode, a, b){ var s = 0, n = 0; for (var i = a; i < b; i++){ s += level(i, mode); n++; } return s / n; }
+
+  var notes = {
+    normal: 'Most transcripts read through to the distal site and keep the full 3′ UTR.',
+    tumor: 'Many transcripts stop at the proximal site, dropping 3′ UTR sequence that carries microRNA binding sites.'
+  };
+  var pdEl = document.getElementById('pdui-val');
+  var noteEl = document.getElementById('pdui-note');
+  var buttons = document.querySelectorAll('[data-mode]');
+
+  function set(mode){
+    var k = 0;
+    bars.forEach(function(b){
+      b.el.style.transform = 'scaleY(' + cov(b.x, mode).toFixed(3) + ')';
+      b.el.style.transitionDelay = b.distal ? (k++ * 9) + 'ms' : '0ms';
+    });
+    pdEl.textContent = (mean(mode, PROX, DIST) / mean(mode, 192, PROX)).toFixed(2);
+    noteEl.textContent = notes[mode];
+    buttons.forEach(function(btn){ btn.setAttribute('aria-pressed', String(btn.getAttribute('data-mode') === mode)); });
+  }
+
+  set('tumor');
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ live.classList.add('ready'); }); });
+  buttons.forEach(function(btn){
+    btn.addEventListener('click', function(){ set(btn.getAttribute('data-mode')); });
+  });
+
+  var copyBtn = document.getElementById('copy-email');
+  var emailEl = document.getElementById('lab-email');
+  function flash(text){ copyBtn.textContent = text; setTimeout(function(){ copyBtn.textContent = 'Copy'; }, 1600); }
+  function selectEmail(){
+    var range = document.createRange(); range.selectNodeContents(emailEl);
+    var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+    flash('Selected');
+  }
+  copyBtn.addEventListener('click', function(){
+    try {
+      navigator.clipboard.writeText(emailEl.textContent.trim()).then(function(){ flash('Copied'); }, selectEmail);
+    } catch (e) { selectEmail(); }
+  });
+})();
+</script>
+</body>
+</html>
